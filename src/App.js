@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+import narutoImg from './images/naruto.png'
+import GlobalStyle from "./components/globalStyle";
+import { Quotes } from "./components/quotes";
+import { QuoteService } from "./services";
+import { useState } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export function App(){
+    const [QuoteState, setQuoteState] = useState({
+        quote:'Ok',
+        speaker:'Speaker'
+    })
+
+    const onUpdate = async () =>{
+        const quote = await QuoteService();
+
+        setQuoteState(quote)
+    }
+    
+    return(
+        <Content>
+            <GlobalStyle/>
+            <Quotes 
+                {...QuoteState} 
+                onUpdate={onUpdate}
+            />
+            <NarutoImg src={narutoImg} alt='Naruto with kunai'/>
+        </Content>
+    )
 }
-
-export default App;
+const Content = styled.div`
+    height:100vh;
+    padding:0 50px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+`;
+const NarutoImg = styled.img`
+    max-width:50vw;  
+    align-self:flex-end;  
+`
